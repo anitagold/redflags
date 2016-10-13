@@ -35,7 +35,8 @@ site.facebookLanguages:        en_US,hu_HU
 # LOGGING
 # -----------------------------------------------------------------------------
 
-spring.main.show_banner:       false
+spring.main.banner-mode:       "off"  # new Spring Boot
+spring.main.show_banner:       false  # old Spring Boott
 logging:
     level:
         org:
