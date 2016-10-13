@@ -51,7 +51,7 @@ public class IndexCtrl {
 		StringBuilder s = new StringBuilder();
 		s.append("<pre>");
 		s.append("\nVersion = " + ver.getVersion());
-		s.append("\nStarted = " + ver.getBuilt());
+		s.append("\nBuilt = " + ver.getBuilt());
 		s.append("</pre>");
 		return s.toString();
 	}

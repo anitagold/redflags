@@ -22,7 +22,7 @@ import org.springframework.context.annotation.PropertySource;
  * @author Zsolt Jurányi
  */
 @Configuration
-@PropertySource("classpath:/version.properties")
+@PropertySource("classpath:/META-INF/build-info.properties")
 public class VersionConfig {
 
 }

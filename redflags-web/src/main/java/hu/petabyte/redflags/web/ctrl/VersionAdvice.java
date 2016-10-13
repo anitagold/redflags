@@ -15,9 +15,6 @@
  */
 package hu.petabyte.redflags.web.ctrl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,20 +25,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @ControllerAdvice
 public class VersionAdvice {
 
-	private static String built;
-
-	static {
-		// because we start after building
-		built = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
-	}
-
-	@Value("${app.title}")
+	@Value("${build.title}")
 	private String appTitle;
 
-	// @Value("${app.built}")
-	// private String built;
+	@Value("${build.time}")
+	private String built;
 
-	@Value("${app.version}")
+	@Value("${build.version}")
 	private String version;
 
 	@ModelAttribute("appTitle")
