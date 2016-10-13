@@ -16,6 +16,8 @@
 package hu.petabyte.redflags.engine.gear.indicator.hu;
 
 import hu.petabyte.redflags.engine.gear.indicator.AbstractTD3CIndicator;
+import hu.petabyte.redflags.engine.gear.indicator.helper.DirectiveHelper;
+import hu.petabyte.redflags.engine.gear.indicator.helper.ProfilesHelper;
 import hu.petabyte.redflags.engine.gear.parser.MetadataParser;
 import hu.petabyte.redflags.engine.model.Duration;
 import hu.petabyte.redflags.engine.model.IndicatorResult;
@@ -68,8 +70,17 @@ public class DeadlineIsTightIndicator extends AbstractTD3CIndicator {
 		return false;
 	}
 
+	private @Autowired ProfilesHelper profiles;
+
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
+		if (DirectiveHelper.isPublicProcurementDirective(notice)
+				&& !profiles.isTestProfile()) {
+			LOG.warn(
+					"Skipping notice {}, it's public procurement directive and this case is not implemented.",
+					notice.getId());
+			return irrelevantData();
+		}
 		String ai = fetchAdditionalInfo(notice);
 		String procType = fetchProcedureType(notice);
 		Date deadline = notice.getData().getDeadline();

@@ -31,13 +31,11 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "techCapSingleContractRefCondIndicator")
 public class TechCapSingleContractRefCondIndicator extends
-		AbstractTD3CIndicator {
+AbstractTD3CIndicator {
 
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
-		String s = String.format("%s", //
-				fetchTechnicalCapacity(notice) //
-				).trim();
+		String s = fetchTechnicalCapacity(notice).trim();
 
 		Pattern p = Pattern
 				.compile("teljesíthető.*?külön (munk|szerződés).*?is");
@@ -48,11 +46,11 @@ public class TechCapSingleContractRefCondIndicator extends
 		for (String line : s.split("\n")) {
 			if (HuIndicatorHelper.isRef(line)
 					&& (line.matches(".* egy szerződés keretében .*") || line
-							.matches(".*Az előírt alkalmassági követelmény.*? (maximum|legfeljebb) (1|egy).*?(referenci|szerződés).*?igazolható"))
-							&& !line.matches(".* (több|tetszőleges számú) (rész|szerződés|referenci).*")
-							&& !line.matches(".* (is teljesíthető|egy referenciaként|amennyiben[^,]+egy szerződés|nem feltétel, hogy[^,]+egy szerződés).*")
-							&& !line.matches(".* egy szerződés keretében[^,.]+is.*")
-							&& !line.matches(".* folyamatosan egy szerződés keretében.*")) {
+							.matches(".*Az előírt alkalmassági követelmény.*? (maximum|legfeljebb) (1|egy).*?(referenci|szerződés).*?igazolható.*"))
+					&& !line.matches(".* (több|tetszőleges számú) (rész|szerződés|referenci).*")
+					&& !line.matches(".* (is teljesíthető|egy referenciaként|amennyiben[^,]+egy szerződés|nem feltétel, hogy[^,]+egy szerződés).*")
+					&& !line.matches(".* egy szerződés keretében[^,.]+is.*")
+					&& !line.matches(".* folyamatosan egy szerződés keretében.*")) {
 				return returnFlag();
 			}
 		}

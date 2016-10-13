@@ -16,14 +16,19 @@
 package hu.petabyte.redflags.engine.gear.indicator.hu;
 
 import hu.petabyte.redflags.engine.gear.indicator.AbstractTD3CIndicator;
+import hu.petabyte.redflags.engine.gear.indicator.helper.DirectiveHelper;
+import hu.petabyte.redflags.engine.gear.indicator.helper.ProfilesHelper;
 import hu.petabyte.redflags.engine.model.IndicatorResult;
-import hu.petabyte.redflags.engine.model.Notice;
 import hu.petabyte.redflags.engine.model.IndicatorResult.IndicatorResultType;
+import hu.petabyte.redflags.engine.model.Notice;
 import hu.petabyte.redflags.engine.model.noticeparts.ObjOfTheContract;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -44,8 +49,20 @@ public class TotalQuantityHiDeltaIndicator extends AbstractTD3CIndicator {
 					"(rendelkezésre állás|számla|megtakarítás|képvisel|osztás|rendelkező|biztonság|fővonal|figyelem|arány|közcél|nyomvonal|mutató|amelynek.*%|ügyf[eé]l|nedvesség|létszám|hatásfok|üzemidő|töménység|célcsoport|közel.*?%|telítettség|%-át|valamennyi rész|teljesítmény|adag|megoszlás|anyagmennyiség|időráfordítás|\\w+nap| nap|%-a erejéig)",
 					Pattern.CASE_INSENSITIVE);
 
+	private static final Logger LOG = LoggerFactory
+			.getLogger(TotalQuantityHiDeltaIndicator.class);
+	private @Autowired ProfilesHelper profiles;
+
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
+		if (DirectiveHelper.isPublicProcurementDirective(notice)
+				&& !profiles.isTestProfile()) {
+			LOG.warn(
+					"Skipping notice {}, it's public procurement directive and this case is not implemented.",
+					notice.getId());
+			return irrelevantData();
+		}
+
 		StringBuilder sb = new StringBuilder();
 		for (ObjOfTheContract obj : notice.getObjs()) {
 			sb.append(obj.getTotalQuantity());

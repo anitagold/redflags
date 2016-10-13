@@ -16,11 +16,16 @@
 package hu.petabyte.redflags.engine.gear.indicator.hu;
 
 import hu.petabyte.redflags.engine.gear.indicator.AbstractTD3CIndicator;
+import hu.petabyte.redflags.engine.gear.indicator.helper.DirectiveHelper;
+import hu.petabyte.redflags.engine.gear.indicator.helper.ProfilesHelper;
 import hu.petabyte.redflags.engine.model.IndicatorResult;
 import hu.petabyte.redflags.engine.model.Notice;
 
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -36,8 +41,19 @@ public class AwCritMethodMissingIndicator extends AbstractTD3CIndicator {
 					"(módszer|pont(ozás|szám|ok).*(kiosztás|megadás|mód|skála)|pontkiosztás|pontskála|számítási metódus|számítási mód|ponthatár.*értékel|(relatív|abszolút) értékelés|arányosan (kevesebbet|többet)|arányosítás|sorba ?rendezés|pontozás|hasznossági függvény| pontszám)",
 					Pattern.CASE_INSENSITIVE);
 
+	private static final Logger LOG = LoggerFactory
+			.getLogger(AwCritMethodMissingIndicator.class);
+	private @Autowired ProfilesHelper profiles;
+
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
+		if (DirectiveHelper.isPublicProcurementDirective(notice)
+				&& !profiles.isTestProfile()) {
+			LOG.warn(
+					"Skipping notice {}, it's public procurement directive and this case is not implemented.",
+					notice.getId());
+			return irrelevantData();
+		}
 		if (!fetchAwardCriteria(notice).equals("AC-2")) {
 			return irrelevantData();
 		}

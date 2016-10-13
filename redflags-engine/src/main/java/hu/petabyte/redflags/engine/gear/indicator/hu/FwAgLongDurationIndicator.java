@@ -16,10 +16,15 @@
 package hu.petabyte.redflags.engine.gear.indicator.hu;
 
 import hu.petabyte.redflags.engine.gear.indicator.AbstractTD3CIndicator;
+import hu.petabyte.redflags.engine.gear.indicator.helper.DirectiveHelper;
+import hu.petabyte.redflags.engine.gear.indicator.helper.ProfilesHelper;
 import hu.petabyte.redflags.engine.model.IndicatorResult;
 import hu.petabyte.redflags.engine.model.Notice;
 import hu.petabyte.redflags.engine.model.noticeparts.ObjOfTheContract;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -33,8 +38,19 @@ public class FwAgLongDurationIndicator extends AbstractTD3CIndicator {
 	private byte maxYears = 4;
 	private String justificationSentence = "Indokolás arra az esetre vonatkozóan, ha a keretmegállapodás időtartama meghaladja a négy évet:";
 
+	private static final Logger LOG = LoggerFactory
+			.getLogger(FwAgLongDurationIndicator.class);
+	private @Autowired ProfilesHelper profiles;
+
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
+		if (DirectiveHelper.isPublicProcurementDirective(notice)
+				&& !profiles.isTestProfile()) {
+			LOG.warn(
+					"Skipping notice {}, it's public procurement directive and this case is not implemented.",
+					notice.getId());
+			return irrelevantData();
+		}
 		boolean found = false;
 		for (ObjOfTheContract obj : notice.getObjs()) {
 			if (null != obj.getFrameworkAgreement()) {

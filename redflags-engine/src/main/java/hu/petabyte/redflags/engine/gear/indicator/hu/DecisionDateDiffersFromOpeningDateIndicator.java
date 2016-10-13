@@ -16,6 +16,8 @@
 package hu.petabyte.redflags.engine.gear.indicator.hu;
 
 import hu.petabyte.redflags.engine.gear.indicator.AbstractTD7Indicator;
+import hu.petabyte.redflags.engine.gear.indicator.helper.DirectiveHelper;
+import hu.petabyte.redflags.engine.gear.indicator.helper.ProfilesHelper;
 import hu.petabyte.redflags.engine.gear.parser.MetadataParser;
 import hu.petabyte.redflags.engine.gear.parser.RawValueParser;
 import hu.petabyte.redflags.engine.gear.parser.TemplateBasedDocumentParser;
@@ -40,7 +42,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "decisionDateDiffersFromOpeningDateIndicator")
 public class DecisionDateDiffersFromOpeningDateIndicator extends
-AbstractTD7Indicator {
+		AbstractTD7Indicator {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(DecisionDateDiffersFromOpeningDateIndicator.class);
@@ -49,9 +51,14 @@ AbstractTD7Indicator {
 	private @Autowired TemplateBasedDocumentParser docParser;
 	private @Autowired RawValueParser rawParser;
 	private int addToMaintainDays = 60;
+	private @Autowired ProfilesHelper profiles;
 
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
+		if (DirectiveHelper.isPublicProcurementDirective(notice)) {
+			return irrelevantData();
+		}
+
 		String procType = fetchProcedureType(notice);
 		if (!procType.equals("PR-1")) {
 			return irrelevantData();

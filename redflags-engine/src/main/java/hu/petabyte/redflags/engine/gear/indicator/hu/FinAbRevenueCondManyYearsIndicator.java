@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "finAbRevenueCondManyYearsIndicator")
 public class FinAbRevenueCondManyYearsIndicator extends AbstractTD3CIndicator {
 
-	private long maxYears = 3;
+	private byte maxYears = 3;
 
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
@@ -60,11 +60,11 @@ public class FinAbRevenueCondManyYearsIndicator extends AbstractTD3CIndicator {
 		return null;
 	}
 
-	public long getMaxYears() {
+	public byte getMaxYears() {
 		return maxYears;
 	}
 
-	public void setMaxYears(long maxYears) {
+	public void setMaxYears(byte maxYears) {
 		this.maxYears = maxYears;
 	}
 

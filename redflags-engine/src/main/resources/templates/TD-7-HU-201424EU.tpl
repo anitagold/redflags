@@ -68,7 +68,6 @@
 (?<nonAward>.*)
 ##V\.2\) Az eljárás eredménye
 ##V\.2\.1\) A szerződés megkötésének dátuma:
-(?<rawDecisionDate>.*)
 ##V\.2\.2\) Ajánlatokra vonatkozó információk
 A beérkezett ajánlatok száma: (?<rawNumberOfOffers>\d+)
 ##V\.2\.3\) A nyertes ajánlattevő neve és címe

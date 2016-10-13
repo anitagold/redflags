@@ -33,12 +33,12 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "techCapRefCondManyYearsIndicator")
 public class TechCapRefCondManyYearsIndicator extends AbstractTD3CIndicator {
 
-	private long minRefYearsWorks = 5;
-	private long minRefYearsSupply = 3;
-	private long minRefYearsService = 3;
-	private long maxRefYearsWorks = 8;
-	private long maxRefYearsSupply = 6;
-	private long maxRefYearsService = 6;
+	private byte minRefYearsWorks = 5;
+	private byte minRefYearsSupply = 3;
+	private byte minRefYearsService = 3;
+	private byte maxRefYearsWorks = 8;
+	private byte maxRefYearsSupply = 6;
+	private byte maxRefYearsService = 6;
 
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
@@ -103,51 +103,51 @@ public class TechCapRefCondManyYearsIndicator extends AbstractTD3CIndicator {
 		return null;
 	}
 
-	public long getMaxRefYearsService() {
+	public byte getMaxRefYearsService() {
 		return maxRefYearsService;
 	}
 
-	public long getMaxRefYearsSupply() {
+	public byte getMaxRefYearsSupply() {
 		return maxRefYearsSupply;
 	}
 
-	public long getMaxRefYearsWorks() {
+	public byte getMaxRefYearsWorks() {
 		return maxRefYearsWorks;
 	}
 
-	public long getMinRefYearsService() {
+	public byte getMinRefYearsService() {
 		return minRefYearsService;
 	}
 
-	public long getMinRefYearsSupply() {
+	public byte getMinRefYearsSupply() {
 		return minRefYearsSupply;
 	}
 
-	public long getMinRefYearsWorks() {
+	public byte getMinRefYearsWorks() {
 		return minRefYearsWorks;
 	}
 
-	public void setMaxRefYearsService(long maxRefYearsService) {
+	public void setMaxRefYearsService(byte maxRefYearsService) {
 		this.maxRefYearsService = maxRefYearsService;
 	}
 
-	public void setMaxRefYearsSupply(long maxRefYearsSupply) {
+	public void setMaxRefYearsSupply(byte maxRefYearsSupply) {
 		this.maxRefYearsSupply = maxRefYearsSupply;
 	}
 
-	public void setMaxRefYearsWorks(long maxRefYearsWorks) {
+	public void setMaxRefYearsWorks(byte maxRefYearsWorks) {
 		this.maxRefYearsWorks = maxRefYearsWorks;
 	}
 
-	public void setMinRefYearsService(long minRefYearsService) {
+	public void setMinRefYearsService(byte minRefYearsService) {
 		this.minRefYearsService = minRefYearsService;
 	}
 
-	public void setMinRefYearsSupply(long minRefYearsSupply) {
+	public void setMinRefYearsSupply(byte minRefYearsSupply) {
 		this.minRefYearsSupply = minRefYearsSupply;
 	}
 
-	public void setMinRefYearsWorks(long minRefYearsWorks) {
+	public void setMinRefYearsWorks(byte minRefYearsWorks) {
 		this.minRefYearsWorks = minRefYearsWorks;
 	}
 

@@ -16,11 +16,16 @@
 package hu.petabyte.redflags.engine.gear.indicator.hu;
 
 import hu.petabyte.redflags.engine.gear.indicator.AbstractTD3CIndicator;
+import hu.petabyte.redflags.engine.gear.indicator.helper.DirectiveHelper;
+import hu.petabyte.redflags.engine.gear.indicator.helper.ProfilesHelper;
 import hu.petabyte.redflags.engine.model.IndicatorResult;
 import hu.petabyte.redflags.engine.model.Notice;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -35,10 +40,22 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "openingDateDiffersFromDeadlineIndicator")
 public class OpeningDateDiffersFromDeadlineIndicator extends
-		AbstractTD3CIndicator {
+AbstractTD3CIndicator {
+
+	private static final Logger LOG = LoggerFactory
+			.getLogger(OpeningDateDiffersFromDeadlineIndicator.class);
+	private @Autowired ProfilesHelper profiles;
 
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
+		if (DirectiveHelper.isPublicProcurementDirective(notice)
+				&& !profiles.isTestProfile()) {
+			LOG.warn(
+					"Skipping notice {}, it's public procurement directive and this case is not implemented.",
+					notice.getId());
+			return irrelevantData();
+		}
+
 		Date deadline = notice.getData().getDeadline();
 		Date openingDate = null;
 		if (null != notice.getProc()) {

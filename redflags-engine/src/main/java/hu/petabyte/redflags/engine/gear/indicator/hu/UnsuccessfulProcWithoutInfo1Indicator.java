@@ -16,10 +16,15 @@
 package hu.petabyte.redflags.engine.gear.indicator.hu;
 
 import hu.petabyte.redflags.engine.gear.indicator.AbstractTD7Indicator;
+import hu.petabyte.redflags.engine.gear.indicator.helper.DirectiveHelper;
+import hu.petabyte.redflags.engine.gear.indicator.helper.ProfilesHelper;
 import hu.petabyte.redflags.engine.model.IndicatorResult;
 import hu.petabyte.redflags.engine.model.Notice;
 import hu.petabyte.redflags.engine.model.noticeparts.Award;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +35,20 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "unsuccessfulProcWithoutInfo1Indicator")
 public class UnsuccessfulProcWithoutInfo1Indicator extends AbstractTD7Indicator {
 
+	private static final Logger LOG = LoggerFactory
+			.getLogger(UnsuccessfulProcWithoutInfo1Indicator.class);
+	private @Autowired ProfilesHelper profiles;
+
 	@Override
 	protected IndicatorResult flagImpl(Notice notice) {
+		if (DirectiveHelper.isPublicProcurementDirective(notice)
+				&& !profiles.isTestProfile()) {
+			LOG.warn(
+					"Skipping notice {}, it's public procurement directive and this case is not implemented.",
+					notice.getId());
+			return irrelevantData();
+		}
+
 		String s = fetchAdditionalInfo(notice).trim();
 		if (unsuccessful(notice)) {
 			for (String line : s.split("\n")) {
@@ -49,32 +66,32 @@ public class UnsuccessfulProcWithoutInfo1Indicator extends AbstractTD7Indicator 
 	private boolean lineMatchesKbt76Text(String line) {
 		line = line.toLowerCase();
 		return // line.contains("eredménytelen") &&
-		(
-		// a)
-		(line.matches(".*(nem|nincs).*(nyújt|érkez|tett).*") && line
-								.matches(".*(ajánlat|részvételi jelentkezés).*"))//
-				// b)
-				|| (line.matches(".*(kizárólag|csak).*érvénytelen.*(ajánlat|részvételi jelentkezés).*(nyújt|érkez|tett).*"))
-				|| (line.matches(".*(mindegyik|minden|összes|valamennyi).*(ajánlat|részvételi jelentkezés).*érvénytelen.*"))
-				|| (line.matches(".*74.*\\([123\\-]+\\).*"))
-				// c)
-				|| (line.matches(".*ajánlatkérő.*fedezet.*mérték.*")//
+				(
+						// a)
+						(line.matches(".*(nem|nincs).*(nyújt|érkez|tett).*") && line
+				.matches(".*(ajánlat|részvételi jelentkezés).*"))//
+								// b)
+								|| (line.matches(".*(kizárólag|csak).*érvénytelen.*(ajánlat|részvételi jelentkezés).*(nyújt|érkez|tett).*"))
+								|| (line.matches(".*(mindegyik|minden|összes|valamennyi).*(ajánlat|részvételi jelentkezés).*érvénytelen.*"))
+								|| (line.matches(".*74.*\\([123\\-]+\\).*"))
+								// c)
+								|| (line.matches(".*ajánlatkérő.*fedezet.*mérték.*")//
 
-				&& line.matches(".*(nem|sem) (nyújt|érkez|tett).*megfelelő ajánlat"))
-				|| line.matches(".*ajánlat.*fedezetnél magasabb.*")//
+										&& line.matches(".*(nem|sem) (nyújt|érkez|tett).*megfelelő ajánlat"))
+										|| line.matches(".*ajánlat.*fedezetnél magasabb.*")//
 
-										// d)
-				|| (line.matches(".*szerződés.*(kötés|teljesítés).*")//
-				&& line.matches(".*(nem (lenne )?képes|képtelen|lehetetlen).*"))
-				// e)
-				|| (line.matches(".*(eljárás tisztaság|érdek(é|ei)t súlyosan sért).*"))
-				// f)
-				|| (line.matches(".*lejár.*ajánlati kötöttség.*")//
-				&& line.contains("egyetlen ajánlattevő sem tartja"))
-		// g)
-		|| (line.matches(".*(új.*?eljárás|eláll.*eljárás (lefolytatás|lebonyolítás)).*"))
-		//
-		);
+				// d)
+										|| (line.matches(".*szerződés.*(kötés|teljesítés).*")//
+												&& line.matches(".*(nem (lenne )?képes|képtelen|lehetetlen).*"))
+												// e)
+												|| (line.matches(".*(eljárás tisztaság|érdek(é|ei)t súlyosan sért).*"))
+												// f)
+												|| (line.matches(".*lejár.*ajánlati kötöttség.*")//
+														&& line.contains("egyetlen ajánlattevő sem tartja"))
+														// g)
+														|| (line.matches(".*(új.*?eljárás|eláll.*eljárás (lefolytatás|lebonyolítás)).*"))
+														//
+						);
 	}
 
 	private boolean unsuccessful(Notice notice) {

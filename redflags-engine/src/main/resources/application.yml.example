@@ -94,6 +94,7 @@ redflags.engine.gears:
     - techCapRefCondManyYearsIndicator
     - techCapEURefCondIndicator
     - procTypeAcceleratedIndicator
+    - procTypeNegotiatedNoJustificationIndicator
     - countOfInvOpsLowIndicator
     - countOfInvOpsNoCondIndicator
     - awCritLacksIndicator
