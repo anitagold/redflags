@@ -149,7 +149,7 @@ redflags.engine.gear:
     filter:
         country:                        HU
         originalLanguage:               HU
-        directive:                      .*2004/18/.*  # classic directive
+        directive:                      .*(2004/18|2014/24).*  # classic + pp directive
         publicationDateMin:             2012-07-01    # Kbt. 2011 filter
 
 redflags.engine.parser.tab012:
