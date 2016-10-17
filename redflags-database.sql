@@ -442,3 +442,20 @@ CREATE TABLE `te_relationdescriptor` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2016-06-15  9:45:01
+
+ALTER TABLE `te_procedure`
+    ADD COLUMN `faDps` LONGTEXT NULL AFTER `noticeId`,
+    ADD COLUMN `gpa` LONGTEXT NULL AFTER `faDps`;
+
+ALTER TABLE `te_objofthecontract`
+    ADD COLUMN `lotTitle` LONGTEXT NULL AFTER `frameworkParticipants`,
+    ADD COLUMN `rawLotCpvCodes` LONGTEXT NULL AFTER `lotTitle`,
+    ADD COLUMN `awardCriteria` LONGTEXT NULL AFTER `rawLotCpvCodes`,
+    ADD COLUMN `rawLotEstimatedValue` VARCHAR(200) NULL AFTER `awardCriteria`,
+    ADD COLUMN `lotEstimatedValue` DECIMAL(22,0) NULL AFTER `rawLotEstimatedValue`,
+    ADD COLUMN `lotEstimatedValueCurr` VARCHAR(200) NULL AFTER `lotEstimatedValue`;
+
+ALTER TABLE `te_award`
+    ADD COLUMN `awarded` DECIMAL(1,0) NULL AFTER `rev`,
+    ADD COLUMN `rawAwarded` VARCHAR(200) NULL AFTER `awarded`,
+    ADD COLUMN `nonAward` LONGTEXT NULL AFTER `rawAwarded`;
