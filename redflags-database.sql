@@ -1,24 +1,8 @@
+-- MySQL dump 10.13  Distrib 5.6.23, for Win32 (x86)
 --
---   Copyright 2014-2016 PetaByte Research Ltd.
---
---   Licensed under the Apache License, Version 2.0 (the "License");
---   you may not use this file except in compliance with the License.
---   You may obtain a copy of the License at
---
---       http://www.apache.org/licenses/LICENSE-2.0
---
---   Unless required by applicable law or agreed to in writing, software
---   distributed under the License is distributed on an "AS IS" BASIS,
---   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---   See the License for the specific language governing permissions and
---   limitations under the License.
---
-
--- MySQL dump 10.13  Distrib 5.5.43, for debian-linux-gnu (x86_64)
---
--- Host: localhost    Database: redflags
+-- Host: 127.0.0.1    Database: redflags
 -- ------------------------------------------------------
--- Server version	5.5.43-0+deb7u1
+-- Server version	5.5.53-0+deb8u1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -108,6 +92,9 @@ CREATE TABLE `te_award` (
   `totalFinalValueVat` decimal(22,2) DEFAULT NULL,
   `noticeId` varchar(200) DEFAULT NULL,
   `rev` decimal(22,0) DEFAULT NULL,
+  `awarded` decimal(1,0) DEFAULT NULL,
+  `rawAwarded` varchar(200) DEFAULT NULL,
+  `nonAward` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -269,6 +256,7 @@ CREATE TABLE `te_leftinfo` (
   `technicalCapacity` longtext,
   `rev` decimal(22,0) DEFAULT NULL,
   `noticeId` longtext,
+  `objRulesAndCritForParticipation` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -441,21 +429,4 @@ CREATE TABLE `te_relationdescriptor` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-15  9:45:01
-
-ALTER TABLE `te_procedure`
-    ADD COLUMN `faDps` LONGTEXT NULL AFTER `noticeId`,
-    ADD COLUMN `gpa` LONGTEXT NULL AFTER `faDps`;
-
-ALTER TABLE `te_objofthecontract`
-    ADD COLUMN `lotTitle` LONGTEXT NULL AFTER `frameworkParticipants`,
-    ADD COLUMN `rawLotCpvCodes` LONGTEXT NULL AFTER `lotTitle`,
-    ADD COLUMN `awardCriteria` LONGTEXT NULL AFTER `rawLotCpvCodes`,
-    ADD COLUMN `rawLotEstimatedValue` VARCHAR(200) NULL AFTER `awardCriteria`,
-    ADD COLUMN `lotEstimatedValue` DECIMAL(22,0) NULL AFTER `rawLotEstimatedValue`,
-    ADD COLUMN `lotEstimatedValueCurr` VARCHAR(200) NULL AFTER `lotEstimatedValue`;
-
-ALTER TABLE `te_award`
-    ADD COLUMN `awarded` DECIMAL(1,0) NULL AFTER `rev`,
-    ADD COLUMN `rawAwarded` VARCHAR(200) NULL AFTER `awarded`,
-    ADD COLUMN `nonAward` LONGTEXT NULL AFTER `rawAwarded`;
+-- Dump completed on 2017-02-03 10:39:33
