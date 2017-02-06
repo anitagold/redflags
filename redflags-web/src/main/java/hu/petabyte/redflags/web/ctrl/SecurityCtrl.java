@@ -18,10 +18,6 @@ package hu.petabyte.redflags.web.ctrl;
 import hu.petabyte.redflags.web.model.Account;
 import hu.petabyte.redflags.web.model.AccountRepo;
 import hu.petabyte.redflags.web.svc.SecuritySvc;
-
-import java.util.Locale;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,19 +26,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * @author Zsolt Jurányi
  */
 @Controller
 public class SecurityCtrl {
 
-	private @Autowired AccountRepo accounts;
-	private @Autowired SecuritySvc svc;
-	private @Value("${redflags.url}") String urlPrefix;
+	private
+	@Autowired                AccountRepo accounts;
+	private
+	@Autowired                SecuritySvc svc;
+	private
+	@Value("${redflags.url}") String      urlPrefix;
 
 	@RequestMapping(value = "/activate/{id}/{token}", method = RequestMethod.GET)
 	public String activate(Map<String, Object> m, @PathVariable int id,
-			@PathVariable String token) {
+	                       @PathVariable String token) {
 		if (!svc.validateToken(id, token)) {
 			m.put("messageLabel", "activate.invalid");
 			m.put("messageLevel", -1);
@@ -82,7 +84,7 @@ public class SecurityCtrl {
 
 	@RequestMapping(value = "/change-password/{id}/{token}", method = RequestMethod.GET)
 	public String changePasswordForm(Map<String, Object> m,
-			@PathVariable long id, @PathVariable String token) {
+	                                 @PathVariable long id, @PathVariable String token) {
 		Account a = accounts.findOne(id);
 		m.put("id", id);
 		m.put("email", a.getEmailAddress());
@@ -105,7 +107,7 @@ public class SecurityCtrl {
 	public String forgotSend(
 			Map<String, Object> m,
 			@RequestParam(required = true) String email,
-			@RequestParam(value = "g-recaptcha-response", required = true) String captcha,
+			@RequestParam(value = "g-recaptcha-response", required = false) String captcha,
 			Locale loc) {
 
 		if (svc.validateCaptcha(captcha)) {
@@ -136,7 +138,7 @@ public class SecurityCtrl {
 			@RequestParam(required = true) String email,
 			@RequestParam(required = true) String password,
 			@RequestParam(required = true) String name,
-			@RequestParam(value = "g-recaptcha-response", required = true) String captcha,
+			@RequestParam(value = "g-recaptcha-response", required = false) String captcha,
 			Locale loc) {
 
 		email = email.toLowerCase();
