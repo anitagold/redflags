@@ -158,9 +158,9 @@ Model:
 			</noscript>
 			
 			<#if siteMessage?? && siteMessage?length &gt; 0 >
-				<div class="col-md-10 col-md-offset-1 well well-sm text-danger text-center">
+				<div class="row"><div class="col-md-10 col-md-offset-1 well well-sm text-danger text-center">
 					<strong><@label siteMessage /></strong>
-				</div>
+				</div></div>
 			</#if>
 
 			<#if pageTitle??>

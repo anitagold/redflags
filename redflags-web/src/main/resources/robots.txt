@@ -5,9 +5,13 @@ Disallow: /js/
 Disallow: /login
 Disallow: /register
 Disallow: /forgot
+Disallow: /notice
 Disallow: /notice/
+Disallow: /notices
 Disallow: /notices/
+Disallow: /organization
 Disallow: /organization/
+Disallow: /organizations
 Disallow: /organizations/
 Disallow: /chart/
 Disallow: /filter/

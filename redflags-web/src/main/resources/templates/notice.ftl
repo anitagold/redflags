@@ -317,7 +317,7 @@ Model:
 
 	<#if left??>
 		<@accordion_panel id="left" headingLabel="notice.left" open=false>
-			<@details map=left fields=['personalSituation', 'financialAbility', 'technicalCapacity'] labelPrefix="notice.left" />
+			<@details map=left fields=['personalSituation', 'financialAbility', 'technicalCapacity', 'objRulesAndCritForParticipation'] labelPrefix="notice.left" />
 		</@accordion_panel>
 	</#if>
 	
