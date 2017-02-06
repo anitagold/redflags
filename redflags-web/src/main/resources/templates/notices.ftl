@@ -189,6 +189,7 @@ Model:
 
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
 
 <script type="text/javascript">
 $(function() {
@@ -200,7 +201,6 @@ $(function() {
 		countSelectedText: '<@label "notices.filter.indicators.selected" />',
 		style: ''
 	});
-
 
 	$('input[name="date"]').daterangepicker({
 		format: 'YYYY-MM-DD',
@@ -233,6 +233,21 @@ $(function() {
 				monthNames: [<@label "filter.date.months" />],
 				firstDay: 1
 			}
+	});
+
+	var timeout;
+	function org(q, p) {
+		if (timeout) clearTimeout(timeout);
+		timeout = setTimeout(function() {
+			$.getJSON('/ac/organizations?q=' + q, p);
+		}, 300);
+	}
+
+	$('input[name="contr"],input[name="winner"]').attr('autocomplete', 'off');
+	$('input[name="contr"],input[name="winner"]').typeahead({
+		items: 5,
+		minLength: 3,
+		source: org
 	});
 });
 </script>

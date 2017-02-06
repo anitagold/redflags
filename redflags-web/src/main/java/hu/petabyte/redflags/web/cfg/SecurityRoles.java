@@ -17,7 +17,6 @@ package hu.petabyte.redflags.web.cfg;
 
 import hu.petabyte.redflags.web.svc.LoginCaptchaFilter;
 import hu.petabyte.redflags.web.svc.SecuritySvc;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,8 +38,10 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @EnableWebSecurity
 public class SecurityRoles extends WebSecurityConfigurerAdapter {
 
-	private @Autowired JdbcTemplate jdbc;
-	private @Autowired SecuritySvc security;
+	private
+	@Autowired JdbcTemplate jdbc;
+	private
+	@Autowired SecuritySvc security;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -50,26 +51,30 @@ public class SecurityRoles extends WebSecurityConfigurerAdapter {
 
 		http.addFilterBefore(new LoginCaptchaFilter(security), CsrfFilter.class)
 				//
-		.authorizeRequests()
+				.authorizeRequests()
 				//
-		.antMatchers(//
-				// resources
-				"/css/**", //
-				"/doc/**", //
-				"/img/**", //
-				"/js/**", //
-				"/favicon.ico", //
-				"/robots.txt", //
-				// public pages
-				"/", //
-				"/activate/**", //
-				"/change-password/**", //
-				"/chart/**", //
-				"/forgot", //
-				"/login", //
-				"/register", //
-				"/send-filter-emails", //
-				"/version"// "/send-test-email"
+				.antMatchers(//
+						// resources
+						"/css/**", //
+						"/doc/**", //
+						"/img/**", //
+						"/js/**", //
+						"/favicon.ico", //
+						"/robots.txt", //
+						// public pages
+						"/", //
+						"/ac/**", //
+						"/activate/**", //
+						"/change-password/**", //
+						"/chart/**", //
+						"/forgot", //
+						"/login", //
+						"/register", //
+						"/send-filter-emails", //
+						"/version",// "/send-test-email"
+						// MAKE IT PUBLIC
+						"/notice/**", "/organization/**", //
+						"/notices/**", "/organizations/**" //
 				)
 				.permitAll()
 				//
