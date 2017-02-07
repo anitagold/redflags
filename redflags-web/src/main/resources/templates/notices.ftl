@@ -153,8 +153,9 @@ Model:
     		<#list 0..f?size-1 as i>
     			<#assign n = f[i] />
     			<div class="form-group col-sm-6 col-lg-4 <#if filters[n]?? && filters[n]?length &gt; 0>has-success</#if>"><div class="col-md-11 input-group">
-					<span class="input-group-addon" data-toggle="tooltip" data-placement="top" title="<@label "notices.filter.${n}.hint" "" />"><span class="glyphicon glyphicon-filter"></span></span>
-					<input class="form-control" type="text" name="${n}" placeholder="<@label "notices.filter.${n}.placeholder" />" <#if filters[n]??>value="${filters[n]}"</#if> />
+    				<#assign suffix><#if n = "value">.${valueScale?c}<#else></#if></#assign>
+					<span class="input-group-addon" data-toggle="tooltip" data-placement="top" title="<@label "notices.filter.${n}.hint${suffix}" "" />"><span class="glyphicon glyphicon-filter"></span></span>
+					<input class="form-control" type="text" name="${n}" placeholder="<@label "notices.filter.${n}.placeholder${suffix}" />" <#if filters[n]??>value="${filters[n]}"</#if> />
 	    		</div></div>
     		</#list>
 
@@ -309,13 +310,13 @@ $(function() {
 
 				<#if obj.estimated?? && obj.estimatedCurr??>
 					<span data-toggle="tooltip" data-placement="bottom" data-container="body" title="<@label "notice.obj.estimatedValue" />">
-					${(obj.estimated/1000000)?string["0.#"]}&nbsp;M&nbsp;${obj.estimatedCurr}
+					${(obj.estimated/valueScale)?string["0.#"]}&nbsp;<@label "value.scale.short.${valueScale?c}" />&nbsp;${obj.estimatedCurr}
 					</span>
 				</#if>
 
 				<#if obj.total?? && obj.totalCurr??>
 					<span data-toggle="tooltip" data-placement="bottom" data-container="body" title="<@label "notice.obj.totalFinalValue" />">
-					${(obj.total/1000000)?string["0.#"]}&nbsp;M&nbsp;${obj.totalCurr}
+					${(obj.total/valueScale)?string["0.#"]}&nbsp;<@label "value.scale.short.${valueScale?c}" />&nbsp;${obj.totalCurr}
 					</span>
 				</#if>
 			</td>

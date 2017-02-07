@@ -24,10 +24,13 @@ redflags:
     url:                       http://www.redflags.eu
     triggerSecret:             ...
 
-#site.useCaptcha:               false
-#site.message:                  site.message.newDirective
-site.languages:                en,hu
-site.facebookLanguages:        en_US,hu_HU
+site:
+    message:                   site.message.newDirective
+    languages:                 en,hu
+    facebookLanguages:         en_US,hu_HU
+    sumValueChartCurrency:     HUF
+    #useCaptcha:                false
+    valueScale:                1000000
 
 
 

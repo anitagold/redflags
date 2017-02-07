@@ -162,7 +162,7 @@ Model:
 				<div class="col-md-9">
 					<#list awards as a>		
 						<p><#if a.winner_id??><a href="/organization/${a.winner_id}">${a.winner_name}</a></#if>					
-						<#if a.totalFinalValue &gt; 0>(${(a.totalFinalValue/1000000)?string["0.#"]}&nbsp;M&nbsp;${a.totalFinalValueCurr})</#if></p>
+						<#if a.totalFinalValue &gt; 0>(${(a.totalFinalValue/valueScale)?string["0.#"]}&nbsp;<@label "value.scale.short.${valueScale?c}" />&nbsp;${a.totalFinalValueCurr})</#if></p>
 					</#list>
 				</div>
 			</div>

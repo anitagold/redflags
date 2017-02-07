@@ -130,17 +130,27 @@ rename table rfwl_temp to rfwl_winners;
 
 -- BAR PLOT
 
+drop table if exists rfwl_temp_bp;
+create table rfwl_temp_bp as
+select year(n.date) y, r.relationRightId c, sum(n.total) v, n.totalCurr
+from
+	rfwl_notices n
+	inner join te_relationdescriptor r on r.relationLeftId = n.id
+where
+	typeId="TD-7" and r.additonalInfo = "contractType" and n.totalCurr is not null
+group by year(n.date), n.totalCurr, r.relationRightId;
+
 drop table if exists rfwl_temp;
-create table if not exists rfwl_temp as
-	select year(n.date) y, r.relationRightId c, sum(n.total) / 1000000000 v
-	from
-		rfwl_notices n
-		inner join te_relationdescriptor r on r.relationLeftId = n.id
-	where
-		typeId="TD-7" and r.additonalInfo = "contractType"
-	group by year(n.date), r.relationRightId;
+create table rfwl_temp as
+select years.y, ctypes.c, currs.c totalCurr,
+	ifnull((select v from rfwl_temp_bp where y=years.y and c=ctypes.c and totalCurr=currs.c), 0) v
+from
+	(select distinct y from rfwl_temp_bp order by y) years,
+    (select 'NC-1' c union select 'NC-2' union select 'NC-4') ctypes,
+    (select distinct totalCurr c from rfwl_temp_bp order by totalCurr) currs;
 drop table if exists rfwl_barplot;
 rename table rfwl_temp to rfwl_barplot;
+drop table rfwl_temp_bp;
 
 -- USERS CLEANING
 

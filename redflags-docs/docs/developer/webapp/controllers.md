@@ -6,6 +6,16 @@ Below I list the controllers with their mapped URLs and their description and pa
 
 
 
+## AutocompleteCtrl (RestController)
+
+Provides JSON data for the autocomplete services.
+
+URL                 | Description | Parameters
+--------------------|-------------|-----------
+`/ac/organizations` | Data for the contracting authority and winner organization filter's autocomplete feature. Returns list of organization names that contain the search term. | `q` - Search term
+
+
+
 ## ChartCtrl (RestController)
 
 Provides JSON data for the charts displayed on the front page.

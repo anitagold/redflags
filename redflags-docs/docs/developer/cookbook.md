@@ -210,6 +210,14 @@ The language chooser will print out all languages that are not the current one.
 
 
 
+### Step 6: Review webapp settings
+
+The following configuration properties are suggested for review/override:
+
+* `site.valueScale`: The [value scale](/developer/webapp/basic/#value-scale) of the estimated and total final values across the website, e.g. 1000 or 1000000
+* `sumValueChartCurrency`: Currency filter of the [bar plot](/developer/webapp/basic/#total-value-chart) on the index page
+
+
 ## Setting up engine for another country
 
 
@@ -297,4 +305,4 @@ Some important things:
 * All lines of the template must be valid **regular expressions** (without the optional row prefix `???`) - so make sure you escape special characters (e.g. dots) in your patterns.
 * Use **named groups** in patterns to refer **fields of data model**. Deeper structures can be called too, but replace dot with zero, e.g. to parse field `a.b.c` use group name `a0b0c`.
 
-Read more about templates [here](/developer/engine/templateparser) and about model [here](#/developer/data).
+Read more about templates [here](/developer/engine/templateparser) and about model [here](/developer/data).

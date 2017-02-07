@@ -76,7 +76,7 @@ Model:
 								
 								<#if obj.estimated?? && obj.estimatedCurr??> 
 									<span data-toggle="tooltip" data-placement="bottom" data-container="body" title="<@label "notice.obj.estimatedValue" />">
-									${(obj.estimated/1000000)?string["0.#"]}&nbsp;M&nbsp;${obj.estimatedCurr}
+									${(obj.estimated/valueScale)?string["0.#"]}&nbsp;<@label "value.scale.short.${valueScale?c}" />&nbsp;${obj.estimatedCurr}
 									</span>
 								</#if>
 							</td>
@@ -133,13 +133,13 @@ Model:
 								
 								<#if obj.estimated?? && obj.estimatedCurr??> 
 									<span data-toggle="tooltip" data-placement="bottom" data-container="body" title="<@label "notice.obj.estimatedValue" />">
-									${(obj.estimated/1000000)?string["0.#"]}&nbsp;M&nbsp;${obj.estimatedCurr}
+									${(obj.estimated/valueScale)?string["0.#"]}&nbsp;<@label "value.scale.short.${valueScale?c}" />&nbsp;${obj.estimatedCurr}
 									</span>
 								</#if>
 								
 								<#if obj.total?? && obj.totalCurr??> 
 									<span data-toggle="tooltip" data-placement="bottom" data-container="body" title="<@label "notice.obj.totalFinalValue" />">				
-									${(obj.total/1000000)?string["0.#"]}&nbsp;M ${obj.totalCurr}
+									${(obj.total/valueScale)?string["0.#"]}&nbsp;<@label "value.scale.short.${valueScale?c}" /> ${obj.totalCurr}
 									</span>
 								</#if>
 							</td>

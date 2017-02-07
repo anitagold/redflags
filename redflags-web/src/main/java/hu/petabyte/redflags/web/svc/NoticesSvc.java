@@ -15,29 +15,23 @@
  */
 package hu.petabyte.redflags.web.svc;
 
-import hu.petabyte.redflags.web.App;
-import hu.petabyte.redflags.web.model.Filter;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import hu.petabyte.redflags.web.App;
+import hu.petabyte.redflags.web.model.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Zsolt Jurányi
@@ -49,8 +43,13 @@ public class NoticesSvc {
 
 	private Configuration cfg;
 	private Template tpl;
-	private @Autowired JdbcTemplate jdbc;
-	private @Autowired NoticeSvc notice;
+	private
+	@Autowired JdbcTemplate jdbc;
+	private
+	@Autowired NoticeSvc notice;
+
+	@Value("${site.valueScale:1000000}")
+	private Long valueScale;
 
 	public long count(List<Filter> filters) {
 		try {
@@ -91,7 +90,7 @@ public class NoticesSvc {
 	}
 
 	public List<Map<String, Object>> query(int perPage, long offset,
-			boolean orderByFlags, List<Filter> filters) {
+	                                       boolean orderByFlags, List<Filter> filters) {
 		try {
 			List<Map<String, Object>> lm = jdbc.queryForList(
 					sql(filters, false, orderByFlags), perPage, offset);
@@ -110,9 +109,10 @@ public class NoticesSvc {
 	}
 
 	private String sql(List<Filter> filters, boolean counting,
-			boolean orderByFlags) throws TemplateException, IOException {
+	                   boolean orderByFlags) throws TemplateException, IOException {
 		Map<String, Object> root = new HashMap<String, Object>();
 		root.put("filters", filters);
+		root.put("valueScale", valueScale);
 		if (counting) {
 			root.put("counting", true);
 		}

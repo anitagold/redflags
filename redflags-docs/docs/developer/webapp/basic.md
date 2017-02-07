@@ -44,6 +44,24 @@ The message can contain HTML tags as well. It will be wrapped inside a `well-sm`
 
 
 
+## Value scale
+
+By default, the Red Flags webapp will display values (estimated and total final values) in millions. You can override this by specifying a new value for `site.valueScale` property.
+
+Make sure you create the appropriate messages for your setting. For example, if you set `site.valueScale=1000`, you have to specify these messages:
+
+* `notices.filter.value.placeholder.1000`
+* `notices.filter.value.hint.1000`
+* `value.scale.short.1000`
+
+
+
+## Total value chart
+
+The total value chart reads the data from `rfwl_barplot` table which contains sum values for all years, contract types and currencies. The query filters this table by the currency specified in `site.sumValueChartCurrency` property.
+
+
+
 ## Captcha
 
 Users need to fill a captcha to log in, register or request a password change. Sometimes it gets annoying to fill in everytime when developers need to test the site. There is an option to turn off the captcha for test purposes.

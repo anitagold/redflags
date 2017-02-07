@@ -265,7 +265,7 @@ function sumValueBars(data) {
 		tooltip: {
 			shared: true,
 			valueDecimals: 2,
-			valueSuffix: ' <@label "charts.billionHUF" />'
+			valueSuffix: ' <@label "charts.sumValueSuffix" />'
 		},
 		yAxis: { title: { text: '<@label "charts.sumValueAxis" />' } }
 	});
@@ -294,6 +294,16 @@ $(function() {
 			refreshChartButtons(s);
 		});
 	}
+
+	Highcharts.setOptions({
+		lang: {
+			numericSymbols: [
+				' <@label "value.scale.short.1000" />',
+				' <@label "value.scale.short.1000000" />',
+				' <@label "value.scale.short.1000000000" />'
+			]
+		}
+    });
 
 	$.ajax({
 		url: '/chart/flagCounts', type: 'GET', async: true,	dataType: "json",

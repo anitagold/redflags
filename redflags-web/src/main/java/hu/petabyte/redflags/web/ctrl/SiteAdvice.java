@@ -16,27 +16,28 @@
 package hu.petabyte.redflags.web.ctrl;
 
 import hu.petabyte.redflags.web.svc.SecuritySvc;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
- *
  * @author Zsolt Jurányi
- *
  */
 @ControllerAdvice
 public class SiteAdvice {
 
-	private @Autowired SecuritySvc security;
+	private
+	@Autowired SecuritySvc security;
 
 	@Value("${redflags.contact}")
 	private String contact;
 
 	@Value("${site.message:}")
 	private String message;
+
+	@Value("${site.valueScale:1000000}")
+	private Long valueScale;
 
 	@ModelAttribute("contact")
 	public String getContact() {
@@ -53,4 +54,8 @@ public class SiteAdvice {
 		return security.isUseCaptcha();
 	}
 
+	@ModelAttribute("valueScale")
+	public Long getValueScale() {
+		return valueScale;
+	}
 }

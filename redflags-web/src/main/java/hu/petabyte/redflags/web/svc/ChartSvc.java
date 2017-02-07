@@ -15,14 +15,15 @@
  */
 package hu.petabyte.redflags.web.svc;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
 
 /**
  * @author Zsolt Jurányi
@@ -33,6 +34,7 @@ public class ChartSvc {
 	// TODO mi lenne ha mégis initben csinálná, aztán scheduled módon update?
 
 	public static class FlagCounts {
+
 		private final Map<Long, Long> flagCountFrequency = new HashMap<Long, Long>();
 		private Long flaggedCount = 0L;
 		private Long notFlaggedCount = 0L;
@@ -52,6 +54,7 @@ public class ChartSvc {
 	}
 
 	public static class FlaggedNotices {
+
 		private final List<String> categories = new ArrayList<String>();
 		private final List<Integer> noticeCounts = new ArrayList<Integer>();
 		private final List<Integer> flaggedNoticeCounts = new ArrayList<Integer>();
@@ -70,12 +73,16 @@ public class ChartSvc {
 
 	}
 
-	private @Autowired JdbcTemplate jdbc;
+	private
+	@Autowired JdbcTemplate jdbc;
+
+	@Value("${site.sumValueChartCurrency:HUF}")
+	private String sumValueChartCurr;
 
 	public List<Integer> flaggedNoticeCountsPerQuarter() {
 		return jdbc
 				.queryForList(
-				// "select count(*) from rfwl_notices where flagCount is not null or flagCount > 0 group by year(date), quarter(date)",
+						// "select count(*) from rfwl_notices where flagCount is not null or flagCount > 0 group by year(date), quarter(date)",
 						"select c.c from (select year(date) y, quarter(date) q from rfwl_notices n group by y, q order by date) q"
 								+ " left join (select year(date) y, quarter(date) q, count(*) c from rfwl_notices where flagCount is not null or flagCount > 0 group by y, q order by date) c"
 								+ "	on q.y = c.y and q.q = c.q", Integer.class);
@@ -141,7 +148,7 @@ public class ChartSvc {
 		sb.append("Categories,NC-1,NC-2,NC-4\n");
 		try {
 			List<Map<String, Object>> list = jdbc
-					.queryForList("select y, group_concat(v) v from rfwl_barplot group by y");
+					.queryForList("select y, group_concat(v) v from rfwl_barplot where totalCurr=? group by y", sumValueChartCurr);
 			for (Map<String, Object> m : list) {
 				sb.append(m.get("y").toString());
 				sb.append(",");

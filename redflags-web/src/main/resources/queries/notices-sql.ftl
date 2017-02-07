@@ -100,11 +100,11 @@ WHERE 1=1
 									<#if f.type == "flags">
 	AND (flagCount BETWEEN ${f.parameter?split("-")[0]} AND ${f.parameter?split("-")[1]})
 									</#if>
-									
+
 									<#-- VALUE FILTER -->				
 									<#if f.type == "value">
-	AND (n.estimated BETWEEN ${f.parameter?split("-")[0]}*1000000 AND ${f.parameter?split("-")[1]}*1000000
-		OR n.total BETWEEN ${f.parameter?split("-")[0]}*1000000 AND ${f.parameter?split("-")[1]}*1000000)
+	AND (n.estimated BETWEEN ${f.parameter?split("-")[0]}*${valueScale?c} AND ${f.parameter?split("-")[1]}*${valueScale?c}
+		OR n.total BETWEEN ${f.parameter?split("-")[0]}*${valueScale?c} AND ${f.parameter?split("-")[1]}*${valueScale?c})
 									</#if>
 									
 									<#-- AFTER FILTER -->
