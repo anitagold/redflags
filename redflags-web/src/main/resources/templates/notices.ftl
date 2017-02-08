@@ -82,7 +82,7 @@ Model:
 			<div class="collapse navbar-collapse" id="details-navbar">
 				<ul class="nav navbar-nav">
 					<li><a href="#">
-						<#assign pc><#if filteredCount != allCount>${filteredCount}<#else>${allCount}</#if></#assign>
+						<#assign pc><#if filteredCount != allCount>${filteredCount?c}<#else>${allCount?c}</#if></#assign>
 						<#if filteredCount != allCount>${filteredCount} / </#if>
 						${allCount} <@label "notices.count.${pluralRules.select(pc?number)}" />
 					</a></li>
