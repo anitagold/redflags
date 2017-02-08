@@ -40,5 +40,7 @@ RedFlags
 
 ${date!""}
 <@label "filter.email.noreply" />
+
 <@label "filter.email.unsubscribe" /> <a href="${unsubscribeUrl}">${unsubscribeUrl}</a>
+
 <@label "filter.email.contact" /> ${contactAddress}

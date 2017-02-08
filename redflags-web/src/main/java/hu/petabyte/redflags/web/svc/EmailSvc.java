@@ -47,6 +47,10 @@ public class EmailSvc {
 	@Autowired MailSender mailSender;
 
 	public boolean send(String to, String subject, String text) {
+		return send(to, subject, text, null);
+	}
+
+	public boolean send(String to, String subject, String text, String unsubscribeUrl) {
 		try {
 			JavaMailSenderImpl sender = (JavaMailSenderImpl) mailSender;
 			MimeMessage mail = sender.createMimeMessage();
@@ -57,6 +61,9 @@ public class EmailSvc {
 			helper.setFrom(from);
 			helper.setTo(to);
 			helper.setSubject(subject);
+			if (null != unsubscribeUrl) {
+				mail.addHeader("List-Unsubscribe", String.format("<%s>", unsubscribeUrl));
+			}
 			sender.send(mail);
 			LOG.trace("E-mail sent with subject: {}", subject);
 			return true;

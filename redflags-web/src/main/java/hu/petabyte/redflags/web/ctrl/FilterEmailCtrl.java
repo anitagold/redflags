@@ -16,14 +16,13 @@
 package hu.petabyte.redflags.web.ctrl;
 
 import hu.petabyte.redflags.web.svc.FilterEmailSvc;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Zsolt Jurányi
@@ -31,16 +30,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FilterEmailCtrl {
 
-	private @Autowired FilterEmailSvc mailSvc;
+	private
+	@Autowired FilterEmailSvc mailSvc;
 
 	@RequestMapping("/send-filter-emails")
 	public boolean send(
-			@RequestParam(value = "secret", required = true) String secret,
+			@RequestParam(value = "secret") String secret,
 			HttpServletRequest request, HttpServletResponse response) {
 		if (!mailSvc.validateSecret(secret)) {
 			return false;
 		} else {
 			return mailSvc.sendFilterLetters(request, response);
 		}
+	}
+
+	@RequestMapping("/unsubscribe")
+	public String unsubscribe(@RequestParam Long id, @RequestParam String email) {
+		return mailSvc.unsubscribe(id, email) ? "Successfully unsubscribed!" : "Failed to unsubscribe.";
 	}
 }

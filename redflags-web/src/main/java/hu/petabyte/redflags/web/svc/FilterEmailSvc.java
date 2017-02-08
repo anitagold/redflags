@@ -98,8 +98,9 @@ public class FilterEmailSvc {
 			root.put("filters", filters);
 			root.put("resultsUrl", urlPrefix + "/notices/10/1/?filter="
 					+ userFilter.getFilter());
-			root.put("unsubscribeUrl",
-					urlPrefix + "/filter/" + userFilter.getId());
+			//String unsubscribeUrl = urlPrefix + "/filter/" + userFilter.getId();
+			String unsubscribeUrl = urlPrefix + "/unsubscribe?id=" + userFilter.getId() + "&email=" + a.getEmailAddress();
+			root.put("unsubscribeUrl", unsubscribeUrl);
 			root.put("urlPrefix", urlPrefix);
 			root.put("contactAddress", contactAddress);
 
@@ -113,7 +114,7 @@ public class FilterEmailSvc {
 						|| userFilter.getName().trim().isEmpty() ? "#"
 						+ userFilter.getId() : userFilter.getName());
 				String to = a.getEmailAddress();
-				if (email.send(to, subject, text)) {
+				if (email.send(to, subject, text, unsubscribeUrl)) {
 					// success
 					filterSvc.fillLastNoticeId(userFilter);
 					userFilterRepo.save(userFilter);
@@ -123,6 +124,19 @@ public class FilterEmailSvc {
 
 		} // filters
 		return true;
+	}
+
+	public boolean unsubscribe(Long id, String email) {
+		Account a = accountRepo.findByEmailAddress(email);
+		if (null != a) {
+			UserFilter f = userFilterRepo.findByIdAndUserId(id, a.getId());
+			if (null != f) {
+				f.setSubscribe(false);
+				userFilterRepo.save(f);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean validateSecret(String secret) {

@@ -50,28 +50,22 @@ public class SecurityRoles extends WebSecurityConfigurerAdapter {
 		filter.setForceEncoding(true);
 
 		http.addFilterBefore(new LoginCaptchaFilter(security), CsrfFilter.class)
-				//
 				.authorizeRequests()
-				//
-				.antMatchers(//
+				.antMatchers(
 						// resources
-						"/css/**", //
-						"/doc/**", //
-						"/img/**", //
-						"/js/**", //
-						"/favicon.ico", //
-						"/robots.txt", //
+						"/css/**", "/doc/**", "/img/**", "/js/**", "/favicon.ico", "/robots.txt",
 						// public pages
-						"/", //
-						"/ac/**", //
-						"/activate/**", //
-						"/change-password/**", //
-						"/chart/**", //
-						"/forgot", //
-						"/login", //
-						"/register", //
-						"/send-filter-emails", //
-						"/version",// "/send-test-email"
+						"/",
+						"/ac/**",
+						"/activate/**",
+						"/change-password/**",
+						"/chart/**",
+						"/forgot",
+						"/login",
+						"/register",
+						"/send-filter-emails",
+						"/unsubscribe",
+						"/version",
 						// MAKE IT PUBLIC
 						"/notice/**", "/organization/**", //
 						"/notices/**", "/organizations/**" //
