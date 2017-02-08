@@ -15,12 +15,13 @@
  */
 package hu.petabyte.redflags.web.ctrl;
 
-import java.util.Arrays;
-import java.util.Locale;
-
+import com.ibm.icu.text.PluralRules;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * @author Zsolt Jurányi
@@ -54,5 +55,10 @@ public class LangAdvice {
 	@ModelAttribute("languages")
 	public String[] languages() {
 		return languages.split(",");
+	}
+
+	@ModelAttribute("pluralRules")
+	public PluralRules pluralRules(Locale loc) {
+		return PluralRules.forLocale(loc);
 	}
 }

@@ -15,13 +15,7 @@
  */
 package hu.petabyte.redflags.web.svc;
 
-import java.util.Locale;
-import java.util.Map;
-
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.ibm.icu.text.PluralRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +25,12 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * @author Zsolt Jurányi
  */
@@ -39,9 +39,12 @@ public class EmailSvc {
 
 	private static final Logger LOG = LoggerFactory.getLogger(EmailSvc.class);
 
-	private @Value("${redflags.from}") String from;
-	private @Autowired InternalRenderer renderer;
-	private @Autowired MailSender mailSender;
+	private
+	@Value("${redflags.from}") String from;
+	private
+	@Autowired InternalRenderer renderer;
+	private
+	@Autowired MailSender mailSender;
 
 	public boolean send(String to, String subject, String text) {
 		try {
@@ -64,9 +67,10 @@ public class EmailSvc {
 	}
 
 	public String text(String templateName, Map<String, Object> model,
-			HttpServletRequest request, HttpServletResponse response,
-			Locale locale) {
+	                   HttpServletRequest request, HttpServletResponse response,
+	                   Locale locale) {
 		try {
+			model.put("pluralRules", PluralRules.forLocale(locale));
 			return renderer.evalView(request, response, model, locale,
 					templateName);
 		} catch (Exception e) {

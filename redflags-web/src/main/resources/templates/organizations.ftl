@@ -77,8 +77,9 @@ Model:
 			<div class="collapse navbar-collapse" id="details-navbar">
 				<ul class="nav navbar-nav">
 					<li><a href="#">
+						<#assign pc><#if filteredCount != allCount>${filteredCount}<#else>${allCount}</#if></#assign>
 						<#if filteredCount != allCount>${filteredCount} / </#if>
-						${allCount} <@label "organizations.count" />
+						${allCount} <@label "organizations.count.${pluralRules.select(pc?number)}" />
 					</a></li>					
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -115,11 +116,11 @@ Model:
 			</td>			
 			<td class="col-md-2">
 				<#if obj.calls?? && obj.calls &gt; 0>
-					<strong>${obj.calls}</strong>&nbsp;<@label "organizations.calls" />
+					<strong>${obj.calls}</strong>&nbsp;<@label "organizations.calls.${pluralRules.select(obj.calls)}" />
 					<br/>
 				</#if>
 				<#if obj.wins?? && obj.wins &gt; 0>
-					<strong>${obj.wins}</strong>&nbsp;<@label "organizations.wins" />
+					<strong>${obj.wins}</strong>&nbsp;<@label "organizations.wins.${pluralRules.select(obj.wins)}" />
 				</#if>
 			</td>
 		</tr>

@@ -168,13 +168,18 @@ function flagCountDonut(data) {
 	rainbow.setNumberRange(0, Object.keys(data.flagCountFrequency).length - 1);
 	rainbow.setSpectrum(green, red);
 
+	var pluralFlag = [];
+	<#list 0..50 as i>
+	pluralFlag.push(' <@label "charts.flag.${pluralRules.select(i)}"/>');
+	</#list>
+
 	var outer = [];
 	var i = 0;
 	for(var fc in data.flagCountFrequency) {
 		var fq = data.flagCountFrequency[fc];
 		var col = rainbow.colourAt(i);
 		outer.push({
-				name: fc+' <@label "charts.flag" />',
+				name: fc+pluralFlag[fc],
 				y: fq,
 				color: '#' + col
 			});

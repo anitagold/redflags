@@ -229,6 +229,12 @@ Field                       | Type     | Description
 `reservedContracts`         | `String` | *III.1.2 / III.1.5 / III.2.4) Information about reserved contracts* (Qualification system with/without call for competition, Periodic indicative notice with call for competition)
 `technicalCapacity`         | `String` | *III.2.3) Technical capacity*
 
+To be able to map documents using *2014/24/EU* directive, we introduced the following new fields:
+
+Field                   | Type       | Description
+------------------------|------------|------------
+`objRulesAndCritForParticipation` | `String`  | *III.1.4) Objective rules and criteria for participation*
+
 
 
 ## Lot.java

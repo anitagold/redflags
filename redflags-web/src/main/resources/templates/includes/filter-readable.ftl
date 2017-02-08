@@ -61,7 +61,11 @@
 			<#assign r>${r} <@label "filter.readable.value.infix" "" /></#assign>
 			<#assign r>${r} <strong>${f.parameter?split("-")[1]} M</strong></#assign>
 		</#if>
-		<#assign r>${r} <@label "filter.readable.${f.type}.suffix" "" /></#assign>
+		<#if f.type=="flags">
+			<#assign r>${r} <@label "filter.readable.${f.type}.suffix.${pluralRules.select(f.parameter?split('-')[1]?number)}" "" /></#assign>
+		<#else>
+			<#assign r>${r} <@label "filter.readable.${f.type}.suffix" "" /></#assign>
+		</#if>
 	</#list>
 	<#return r?replace(',$', '', 'r')+'.'>
 </#function>

@@ -23,7 +23,7 @@
 <@label "filter.email.greeting" /> ${user},
 
 
-<@label "filter.email.beforeCount" /> <strong>${count} db</strong> <@label "filter.email.afterCount" />
+<@label "filter.email.beforeCount" /> <strong>${count}</strong> <@label "filter.email.afterCount.${pluralRules.select(count)}" />
 
 <em>${readableFilter(filters)}</em>
 

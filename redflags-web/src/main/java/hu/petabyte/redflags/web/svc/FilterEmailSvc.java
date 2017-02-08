@@ -15,27 +15,17 @@
  */
 package hu.petabyte.redflags.web.svc;
 
-import hu.petabyte.redflags.web.model.Account;
-import hu.petabyte.redflags.web.model.AccountRepo;
-import hu.petabyte.redflags.web.model.Filter;
-import hu.petabyte.redflags.web.model.UserFilter;
-import hu.petabyte.redflags.web.model.UserFilterRepo;
+import hu.petabyte.redflags.web.model.*;
 import hu.petabyte.redflags.web.util.Filters;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Zsolt Jurányi
@@ -45,23 +35,32 @@ public class FilterEmailSvc {
 
 	private static final SimpleDateFormat df = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss");
-	private @Autowired UserFilterRepo userFilterRepo;
-	private @Autowired NoticesSvc noticesSvc;
-	private @Autowired AccountRepo accountRepo;
-	private @Autowired MessageSource msg;
-	private @Autowired EmailSvc email;
-	private @Autowired FilterSvc filterSvc;
-	private @Value("${redflags.url}") String urlPrefix;
-	private @Value("${redflags.contact}") String contactAddress;
-	private @Value("${redflags.triggerSecret}") String triggerSecret;
+	private
+	@Autowired UserFilterRepo userFilterRepo;
+	private
+	@Autowired NoticesSvc noticesSvc;
+	private
+	@Autowired AccountRepo accountRepo;
+	private
+	@Autowired MessageSource msg;
+	private
+	@Autowired EmailSvc email;
+	private
+	@Autowired FilterSvc filterSvc;
+	private
+	@Value("${redflags.url}") String urlPrefix;
+	private
+	@Value("${redflags.contact}") String contactAddress;
+	private
+	@Value("${redflags.triggerSecret}") String triggerSecret;
 
 	public boolean sendFilterLetters(HttpServletRequest request,
-			HttpServletResponse response) {
+	                                 HttpServletResponse response) {
 
 		List<UserFilter> userFilters = userFilterRepo
 				.findBySubscribeTrueOrderByUserIdAsc();
 		for (UserFilter userFilter : userFilters) {
-			// System.out.println(userFilter);
+			//System.out.println(userFilter);
 
 			// get user:
 			Account a = accountRepo.findOne(userFilter.getUserId());
@@ -77,12 +76,14 @@ public class FilterEmailSvc {
 			List<Filter> filters = new Filters(filter).asList();
 
 			// injecting after filter to get only fresh ones:
-			filters.add(new Filter("after", userFilter.getLastSentNumber()
-					+ "-" + userFilter.getLastSentYear()));
+			if (null != userFilter.getLastSentNumber() && null != userFilter.getLastSentYear()) {
+				filters.add(new Filter("after", userFilter.getLastSentNumber()
+						+ "-" + userFilter.getLastSentYear()));
+			}
 
 			// query:
 			long count = noticesSvc.count(filters);
-			// System.out.println("COUNT: " + count);
+			//System.out.println("COUNT: " + count);
 			if (0 == count) {
 				continue;
 			}
@@ -109,8 +110,8 @@ public class FilterEmailSvc {
 						loc)
 						+ " "
 						+ (null == userFilter.getName()
-								|| userFilter.getName().trim().isEmpty() ? "#"
-								+ userFilter.getId() : userFilter.getName());
+						|| userFilter.getName().trim().isEmpty() ? "#"
+						+ userFilter.getId() : userFilter.getName());
 				String to = a.getEmailAddress();
 				if (email.send(to, subject, text)) {
 					// success

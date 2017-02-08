@@ -182,6 +182,8 @@ Be careful around `flag.{IndicatorId}.info` properties, keep the format where **
 
 **Special characters** (outside Latin-1) **must be escaped** using `\uHHHH` format. It is suggested to use an editor which can handle property files, it will do the dirty work. (*Eclipse* can do this for example.)
 
+Don't forget to review the **plural forms**. First, check [what forms](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) does your language have, then create the appropriate message variations as [described here](/developer/webapp/basic/#plural-forms).
+
 
 
 ### Step 3: Translate *About the project* section
@@ -216,6 +218,7 @@ The following configuration properties are suggested for review/override:
 
 * `site.valueScale`: The [value scale](/developer/webapp/basic/#value-scale) of the estimated and total final values across the website, e.g. 1000 or 1000000
 * `sumValueChartCurrency`: Currency filter of the [bar plot](/developer/webapp/basic/#total-value-chart) on the index page
+
 
 
 ## Setting up engine for another country
