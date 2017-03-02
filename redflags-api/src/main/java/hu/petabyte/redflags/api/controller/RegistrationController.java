@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -64,6 +65,9 @@ public class RegistrationController {
 
 	@Autowired
 	private CaptchaValidatorSvcProxy captchaValidator;
+
+	@Value("${redflags.from}")
+	private String from;
 
 	@InitBinder("apiUser")
 	public void initBinder(WebDataBinder binder) {
@@ -115,7 +119,7 @@ public class RegistrationController {
 			apiUserService.save(apiUser);
 
 			SimpleMailMessage email = new SimpleMailMessage();
-			email.setFrom("registration@api.redflags.eu");
+			email.setFrom(from);
 			email.setTo(apiUser.getEmail());
 			email.setSubject(msg.getMessage("registrationEmail.subject", null,
 					locale));

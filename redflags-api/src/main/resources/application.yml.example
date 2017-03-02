@@ -41,6 +41,9 @@ fromDateDefault: 1970-01-01
 defaultItemCount: 10
 maxItemCount: 50
 
+redflags:
+    from: registration@api.redflags.eu
+
 security:
   basic:
     enabled: false
@@ -80,5 +83,6 @@ spring:
     mail:
         host:                  localhost
         port:                  25
+        mime.charset:          utf8
 
 ...
